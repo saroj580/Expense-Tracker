@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 5000;
 
 
 const authRoutes = require("./routes/auth.route.js")
+const path = require("path");
 
 //middleware to handle cors
 app.use(cors({
@@ -31,6 +32,9 @@ app.get("/", (req, res) => {
 
 //routes 
 app.use("/api/v1/auth", authRoutes);
+
+//serve uploads folder 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(PORT, (req, res) => {
     console.log(`Connected to http://localhost:${PORT}`)
