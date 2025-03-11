@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema({
     userId: {
@@ -22,5 +22,4 @@ const notificationSchema = new mongoose.Schema({
    createdAt: { type: Date, default: Date.now }, 
 });
 
-export const Notification = mongoose.model("Notification", notificationSchema);
-export default Notification;
+module.exports = mongoose.model("Notification", notificationSchema);

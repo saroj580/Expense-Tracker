@@ -1,7 +1,8 @@
-import mongoose from "mongoose"
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
-  username: {
+  fullName: {
     type: String,
     required: true,
     unique: true
@@ -15,12 +16,25 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  profileImageUrl: {
+    type: String,
+    default : null
   },
-});
+}, {timestamps : true});
 
-export const User = mongoose.model("User", userSchema);
+//hash password before saving 
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password'))
+    return next();
+  
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+})
 
-export default User;
+//compare the password
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
+}
+
+
+module.exports = mongoose.model("User", userSchema);

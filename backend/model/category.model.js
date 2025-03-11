@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema({
     userId: {
@@ -13,5 +13,4 @@ const categorySchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export const Category = mongoose.model('Category', categorySchema);
-export default Category;
+module.exports = mongoose.model('Category', categorySchema);

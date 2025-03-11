@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+const mongoose = require("mongoose");
 
 const expenseSchema = new mongoose.Schema({
   userId: {
@@ -36,5 +36,4 @@ const expenseSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export const Expense = mongoose.model('Expense', expenseSchema);
-export default Expense;
+module.exports = mongoose.model('Expense', expenseSchema);
