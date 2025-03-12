@@ -8,7 +8,9 @@ const PORT = process.env.PORT || 5000;
 
 
 const authRoutes = require("./routes/auth.route.js")
+const incomeRoutes = require("./routes/income.route.js")
 const path = require("path");
+
 
 //middleware to handle cors
 app.use(cors({
@@ -32,6 +34,7 @@ app.get("/", (req, res) => {
 
 //routes 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/income", incomeRoutes);
 
 //serve uploads folder 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
