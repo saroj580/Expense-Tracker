@@ -6,15 +6,12 @@ const expenseSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  accountId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Account',
-    required: true
+  icon: {
+    type : String
   },
-  categoryId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
-    required: true
+  category: {
+    type: String,
+    required : true
   },
   amount: {
     type: Number,
@@ -24,16 +21,7 @@ const expenseSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  description: {
-    type: String,
-    trim: true
-  },
-  paymentMethod: {
-    type: String,
-    enum: ['Cash', 'Credit Card', 'Debit Card', 'UPI'],
-    required: true
-  },
-  createdAt: { type: Date, default: Date.now },
-});
+  
+}, {timestamps : true});
 
 module.exports = mongoose.model('Expense', expenseSchema);

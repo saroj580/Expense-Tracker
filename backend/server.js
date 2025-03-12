@@ -7,8 +7,9 @@ const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 
 
-const authRoutes = require("./routes/auth.route.js")
-const incomeRoutes = require("./routes/income.route.js")
+const authRoutes = require("./routes/auth.route.js");
+const incomeRoutes = require("./routes/income.route.js");
+const expenseRoutes = require("./model/expense.model.js");
 const path = require("path");
 
 
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 //routes 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/income", incomeRoutes);
+app.use("/api/v1/expense", expenseRoutes);
 
 //serve uploads folder 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
