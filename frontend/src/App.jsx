@@ -6,11 +6,13 @@ import SignUp from "./page/Auth/SignUp";
 import Home from "./page/Dashboard/Home";
 import Expense from "./page/Dashboard/Expense";
 import Income from "./page/Dashboard/Income"
+import UserProvider from './context/userContext';
 
 
 function App() {
   return (
-    <div>
+    <UserProvider>
+      <div>
       <Router>
         <Routes>
           <Route path='/' element={ <Root/>}  />
@@ -22,6 +24,7 @@ function App() {
         </Routes>
       </Router>
     </div>
+    </UserProvider>
   )
 }
 
