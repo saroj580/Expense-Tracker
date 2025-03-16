@@ -1,32 +1,45 @@
-// import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DahboardLayout from '../../components/layout/DahboardLayout';
 import { useUserAuth } from '../../hooks/useUserAuth';
-// import axiosInstance from '../../utils/axiosInstance';
+import { useEffect, useState } from 'react';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPath';
 
 export default function Home() {
-  // const [uploadedImages, setUploadedImages] = useState([]);
   useUserAuth();
 
-  // useEffect(() => {
-  //   const fetchDashboardData = async () => {
-  //     try {
-  //       const response = await axiosInstance.get('/api/v1/dashboard');
-  //       setUploadedImages(response.data.uploadedImages);
-  //     } catch (error) {
-  //       console.error('Error fetching dashboard data:', error);
-  //     }
-  //   };
+  const navigate = useNavigate();
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  //   fetchDashboardData();
-  // }, []);
+  const fetchDashboardData = async () => {
+    if (loading)
+      return;
+    setLoading(true);
+
+    try {
+      const response = await axiosInstance.get(`${API_PATHS.DASHBOARD.GET_DATA}`);
+      if (response.data) {
+        setDashboardData(response.data);
+      }
+    } catch (error) {
+      console.log("Something went wrong. Please try again later.", error);      
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchDashboardData();
+
+  }, []);
 
   return (
     <DahboardLayout activeMenu='Dashboard'>
       <div className='my-5 mx-auto'>
-        {/* {uploadedImages.map((image) => (
-          <img key={image._id} src={image.imageUrl} alt="Uploaded" />
-        ))} */}
-        Home
+        <div className=''>
+
+        </div>
       </div>
     </DahboardLayout>
   );

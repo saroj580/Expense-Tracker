@@ -19,7 +19,7 @@ const UserProvider = ({ children }) => {
         localStorage.setItem("user", JSON.stringify(userData)); // Persist user data
     };
 
-    //function to clear user data (e.g. on lagout)
+    //function to clear user data (e.g. on logout)
     const clearUser = () => {
         setUser(null);
         localStorage.removeItem("user"); // Remove user data on logout
