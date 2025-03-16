@@ -6,7 +6,8 @@ import { validateEmail } from '../../utils/helper';
 import ProfilePicSelector from '../../components/Input/ProfilePicSelector';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
-import { UserContext } from '../../context/userContext';
+import { UserContext } from '../../context/UserContext';
+import uploadImage from '../../utils/uploadImage';
 
 export default function SignUp() {
   const [profilePic, setProfilePic] = useState(null);
@@ -45,7 +46,7 @@ export default function SignUp() {
     //SignUp APIs call
     try { 
       //uploda image if present
-      if (profileImageUrl) {
+      if (profilePic) {
         const imgUploads = await uploadImage(profilePic);
         profileImageUrl = imgUploads.imageUrl || "";
       }
@@ -62,8 +63,8 @@ export default function SignUp() {
         navigate("/dashboard");
       }
     } catch (err) {
-      if (error.response && error.response.data.message) {
-        setError(error.response.data.message)
+      if (err.response && err.response.data.message) {
+        setError(err.response.data.message);
       } else {
         setError("Something went Wrong. Please try again later");
       }
@@ -84,7 +85,7 @@ export default function SignUp() {
               type='text'
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              label="fullName"
+              label="full Name"
               placeholder='Jhon'
             />
             <Input
@@ -99,7 +100,7 @@ export default function SignUp() {
                 type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                label="password"
+                label="Password"
                 placeholder='********'
               />
             </div>

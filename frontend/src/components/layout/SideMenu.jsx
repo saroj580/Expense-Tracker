@@ -18,8 +18,8 @@ export default function SideMenu({activeMenu}) {
 
     const handleLogout = () => {
         localStorage.clear();
-        clearUser;
-        navigate('/logout');
+        clearUser();
+        navigate('/login');
     };
 
     return <div className='w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-500/50 p-5 sticky top-[61px] z-20'>
@@ -38,7 +38,7 @@ export default function SideMenu({activeMenu}) {
             <button
                 key={`menu_${index}`}
                 className={`w-full flex items-center gap-4 text-[15px] ${
-                    activeMenu === item.label ? "text-white bg-primary" : ""
+                    activeMenu == item.label ? "text-white bg-primary" : ""
                 } py-3 px-6 rounded-lg mb-3`}
                 onClick={() => handleClick(item.path)}
             >

@@ -12,7 +12,6 @@ import UserProvider from './context/userContext';
 function App() {
   return (
     <UserProvider>
-      <div>
       <Router>
         <Routes>
           <Route path='/' element={ <Root/>}  />
@@ -23,7 +22,6 @@ function App() {
           <Route path='expense' exact element={ <Expense/>}  />
         </Routes>
       </Router>
-    </div>
     </UserProvider>
   )
 }

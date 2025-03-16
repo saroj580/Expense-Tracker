@@ -15,11 +15,23 @@ router.post("/login", loginUser);
 
 router.get("/getUser", protect, getUserInfo);
 
-router.post("/upload-image", upload.single("image"), (req, res) => {
+router.post("/upload-image", upload.single("image"),  (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
     }
-    const imageUrl = `${req.protocol}.//${req.get("host")}/uploads/${req.file.filename}`;
+
+    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    
+    // // Save the image URL in the corresponding income record
+    // const incomeRecord = new Income({
+    //     userId: req.user.id,
+    //     imageUrl: imageUrl,
+    //     source: req.body.source, // Include source from request body
+    //     amount: req.body.amount,   // Include amount from request body
+    // });
+
+    // await incomeRecord.save();
+
     res.status(200).json({ imageUrl });
 })
 

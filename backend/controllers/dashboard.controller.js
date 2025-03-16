@@ -87,8 +87,12 @@ exports.getdashboardData = async (req, res) => {
         //         )),
         // ].sort((a, b) => b.date - a.date) //sort latest first
 
-        //final response 
+        // Fetch uploaded images for the user
+        // const uploadedImages = await Image.find({ userId }); // Assuming there is an Image model
+
         res.json({
+            // uploadedImages, // Include the uploaded images in the response
+
             totalBalance: (totalIncome[0]?.total || 0) - (totalExpense[0]?.total || 0),
             totalIncome: totalIncome[0]?.total || 0,
             totalExpense: totalExpense[0]?.total || 0,

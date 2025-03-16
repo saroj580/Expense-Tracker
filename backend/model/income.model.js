@@ -18,10 +18,13 @@ const incomeSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    // imageUrl: { 
+    //     type: String,
+    // },
     date: {
         type: Date,
         default: Date.now
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model("Income", incomeSchema)
+module.exports = mongoose.model("Income", incomeSchema);
