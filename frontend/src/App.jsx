@@ -6,7 +6,7 @@ import SignUp from "./page/Auth/SignUp";
 import Home from "./page/Dashboard/Home";
 import Expense from "./page/Dashboard/Expense";
 import Income from "./page/Dashboard/Income"
-import UserProvider from './context/userContext';
+import UserProvider from './context/UserContext';
 
 
 function App() {
