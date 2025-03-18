@@ -19,7 +19,7 @@ export default function CustomPieChart({ data = [], label, totalAmount, colors, 
                     cx="50%"
                     cy="50%"
                     outerRadius={130}
-                    innerRadius={100}
+                    innerRadius={80}
                     labelLine = {false}
                 >
                     {Array.isArray(data) ? data.map((entry, index) => (
@@ -34,9 +34,8 @@ export default function CustomPieChart({ data = [], label, totalAmount, colors, 
                         <text
                             x="50%"
                             y="50%"
-                            dy={-25}
+                            dy={-10}
                             textAnchor='middle'
-                            dominantBaseline="central"
                             fill='#666'
                             fontSize="14px"
                         >
@@ -47,10 +46,9 @@ export default function CustomPieChart({ data = [], label, totalAmount, colors, 
                             y="50%"
                             dy={20}
                             textAnchor='middle'
-                            dominantBaseline="central"
                             fill='#333'
                             fontSize="24px"
-                            fontWeight="semi-bold"
+                            fontWeight="600"
                         
                         >
                             {totalAmount}

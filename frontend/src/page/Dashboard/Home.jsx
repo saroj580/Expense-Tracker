@@ -11,6 +11,9 @@ import { IoMdCard } from 'react-icons/io';
 import { addThousandsSeparator } from '../../utils/helper';
 import RecentTransaction from '../../components/dashboard/RecentTransaction';
 import FinanceOverview from '../../components/dashboard/FinanceOverview';
+import ExpenseTransaction from './ExpenseTransaction';
+import Last30daysExpense from './Last30daysExpense';
+import RecentIncomeWithChart from './RecentIncomeWithChart';
 
 export default function Home() {
   useUserAuth();
@@ -26,6 +29,7 @@ export default function Home() {
 
     try {
       const response = await axiosInstance.get(`${API_PATHS.DASHBOARD.GET_DATA}`);
+      console.log("Backend Response:", response.data);
       if (response.data) {
         setDashboardData(response.data);
       }
@@ -40,6 +44,13 @@ export default function Home() {
     fetchDashboardData();
 
   }, []);
+
+  useEffect(() => {
+    if (dashboardData) {
+      console.log("Dashboard Data:", dashboardData);
+      console.log("Last 30 Days Expenses:", dashboardData.last30DaysExpenses);
+    }
+  }, [dashboardData]);  
 
   return (
     <DahboardLayout activeMenu='Dashboard'>
@@ -81,7 +92,18 @@ export default function Home() {
             totalExpense={dashboardData?.totalExpense || 0}
           />
 
+          <ExpenseTransaction
+            transactions={dashboardData?.recentTransaction || []}
+            onSeeMore={() => navigate('/expense')}
+          />
+          <Last30daysExpense
+            data={dashboardData?.last30DaysExpenses?.transaction || []} // Use "last30DaysExpenses" and "transaction"
+          />
 
+          <RecentIncomeWithChart
+            data={dashboardData?.last60DaysIncome?.transaction?.slice(0, 4) || []}
+            totalIncome={dashboardData?.totalIncome || 0} 
+          />
         </div>
       </div>
     </DahboardLayout>
