@@ -11,9 +11,10 @@ import { IoMdCard } from 'react-icons/io';
 import { addThousandsSeparator } from '../../utils/helper';
 import RecentTransaction from '../../components/dashboard/RecentTransaction';
 import FinanceOverview from '../../components/dashboard/FinanceOverview';
-import ExpenseTransaction from './ExpenseTransaction';
-import Last30daysExpense from './Last30daysExpense';
-import RecentIncomeWithChart from './RecentIncomeWithChart';
+import RecentIncomeWithChart from "../../components/dashboard/RecentIncomeWithChart"
+import ExpenseTransaction from '../../components/dashboard/ExpenseTransaction';
+import Last30daysExpense from '../../components/dashboard/Last30daysExpense';
+import RecentIncome from '../../components/dashboard/RecentIncome';
 
 export default function Home() {
   useUserAuth();
@@ -97,12 +98,17 @@ export default function Home() {
             onSeeMore={() => navigate('/expense')}
           />
           <Last30daysExpense
-            data={dashboardData?.last30DaysExpenses?.transaction || []} // Use "last30DaysExpenses" and "transaction"
+            data={dashboardData?.last30DaysExpenses?.transaction || []} 
           />
 
           <RecentIncomeWithChart
             data={dashboardData?.last60DaysIncome?.transaction?.slice(0, 4) || []}
             totalIncome={dashboardData?.totalIncome || 0} 
+          />
+
+          <RecentIncome
+            transactions={dashboardData?.last60DaysIncome?.transaction || []}
+            onSeeMore={() => navigate('/income')}
           />
         </div>
       </div>

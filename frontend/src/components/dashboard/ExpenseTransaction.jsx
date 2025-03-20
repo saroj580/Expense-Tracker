@@ -1,9 +1,10 @@
 import React from 'react'
 import { LuArrowRight } from 'react-icons/lu'
 import moment from 'moment'
-import TransactionInfoCard from '../../components/cards/TransactionInfoCard'
+import TransactionInfoCard from '../cards/TransactionInfoCard'
 
-export default function ExpenseTransaction({transactions, onSeeMore}) {
+export default function ExpenseTransaction({ transactions, onSeeMore }) {
+     console.log("ExpenseTransaction Data:", transactions);
     return (
         <div className='card'>
             <div className='flex items-center justify-between'>

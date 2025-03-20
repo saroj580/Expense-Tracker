@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recha
 import CustomTooltip from './CustomTooltip';
 import CustomLegend from './CustomLegend';
 
-export default function CustomPieChart({ data = [], label, totalAmount, colors, showTextAnchor }) {
+export default function CustomPieChart({ data, label, totalAmount, colors, showTextAnchor }) {
 
     useEffect(() => {
         console.log("Chart Props: ", { data, label, totalAmount, colors });
@@ -18,13 +18,17 @@ export default function CustomPieChart({ data = [], label, totalAmount, colors, 
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={130}
-                    innerRadius={80}
+                    outerRadius={100}
+                    innerRadius={60}
                     labelLine = {false}
                 >
-                    {Array.isArray(data) ? data.map((entry, index) => (
+                    {/* {Array.isArray(data) ? data.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                    )) : null }
+                    )) : entry} */}
+                    
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                    ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip/>}/>
                 <Legend content={<CustomLegend/>}/>
@@ -34,7 +38,7 @@ export default function CustomPieChart({ data = [], label, totalAmount, colors, 
                         <text
                             x="50%"
                             y="50%"
-                            dy={-10}
+                            dy={-25}
                             textAnchor='middle'
                             fill='#666'
                             fontSize="14px"
@@ -44,7 +48,7 @@ export default function CustomPieChart({ data = [], label, totalAmount, colors, 
                         <text
                             x="50%"
                             y="50%"
-                            dy={20}
+                            dy={8}
                             textAnchor='middle'
                             fill='#333'
                             fontSize="24px"
