@@ -5,8 +5,8 @@ import IncomeOverview from '../../components/income/IncomeOverview';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
 import { useFetcher } from 'react-router-dom';
-import Modal from '../../components/income/Modal';
 import AddIncomeForm from '../../components/income/AddIncomeForm';
+import Modal from '../../components/layout/Modal';
 
 export default function Income() {
   const [incomeData, setIncomeData] = useState([]);
@@ -36,7 +36,41 @@ export default function Income() {
   };
 
   //Handle add income 
-  const handleAddIncome = async (income) => { };
+  const handleAddIncome = async (income) => {
+    const { source, amount, date, icon } = income;
+
+    //validation check
+    if (!source.trim()) {
+      toast.error("Source is required.");
+      return;
+    }
+
+    if (!amount || isNaN(amount) || Number(amount <= 0 )) {
+      toast.error("Amount should be valid number greater than the 0.");
+      return;
+    }
+
+    if(!date){
+      toast.error("Date is required.");
+      return;
+    }
+
+    try {
+      await axiosInstance.post(API_PATHS.INCOME.ADD_INCOME, {
+        source,
+        amount,
+        icon,
+        date
+      })
+
+      setOpenAddIncomeModal(false);
+      toast.success("Income added successfully");
+      fetchIncomeDetails();
+    } catch (error) {
+      console.error("Eroor adding the income", error.respone?.data.message || error.message);
+      
+    }
+   };
 
   //delete income 
   const deleteIncome = async (id) => { };
