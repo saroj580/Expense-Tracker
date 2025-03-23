@@ -4,9 +4,9 @@ import { useState } from 'react'
 import IncomeOverview from '../../components/income/IncomeOverview';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
-import { useFetcher } from 'react-router-dom';
 import AddIncomeForm from '../../components/income/AddIncomeForm';
 import Modal from '../../components/layout/Modal';
+import toast from 'react-hot-toast';
 
 export default function Income() {
   const [incomeData, setIncomeData] = useState([]);

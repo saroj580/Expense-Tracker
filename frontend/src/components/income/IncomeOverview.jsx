@@ -9,7 +9,7 @@ export default function IncomeOverview({transactions, onAddIncome}) {
         const result = prepareIncomeChartData(transactions);
         setChartData(result);
         return () => { };
-    },[])
+    },[transactions])
     return (
         <div className='card'>
             <div className='flex items-center justify-between'>

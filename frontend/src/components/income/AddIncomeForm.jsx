@@ -10,7 +10,7 @@ export default function AddIncomeForm({ onAddIncome }) {
         icon :''
     })
 
-    const handleChange = (key, value) => setIncome({ ...[income], [key]: value })
+    const handleChange = (key, value) => setIncome({ ...income, [key]: value })
     return (
         <div>
             <EmojiPickerPopup
