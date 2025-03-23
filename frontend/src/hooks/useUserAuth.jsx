@@ -5,7 +5,7 @@ import axiosInstance from '../utils/axiosInstance';
 import { API_PATHS } from "../utils/apiPath";
 
 
-export const useUserAuth = () => {
+export const UseUserAuth = () => {
     const { user, updateUser, clearUser } = useContext(UserContext)
     const navigate = useNavigate();
 

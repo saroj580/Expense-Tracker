@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import DahboardLayout from '../../components/layout/DahboardLayout';
-import { useUserAuth } from '../../hooks/useUserAuth';
+import { UseUserAuth } from '../../hooks/useUserAuth';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPath';
@@ -17,7 +17,7 @@ import Last30daysExpense from '../../components/dashboard/Last30daysExpense';
 import RecentIncome from '../../components/dashboard/RecentIncome';
 
 export default function Home() {
-  useUserAuth();
+  UseUserAuth();
 
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);

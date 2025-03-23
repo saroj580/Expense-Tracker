@@ -7,8 +7,12 @@ import { API_PATHS } from '../../utils/apiPath';
 import AddIncomeForm from '../../components/income/AddIncomeForm';
 import Modal from '../../components/layout/Modal';
 import toast from 'react-hot-toast';
+import IncomeList from '../../components/income/IncomeList';
+import DeleteAlert from '../../components/layout/DeleteAlert';
+import { UseUserAuth } from '../../hooks/useUserAuth';
 
 export default function Income() {
+  UseUserAuth();
   const [incomeData, setIncomeData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
@@ -73,7 +77,16 @@ export default function Income() {
    };
 
   //delete income 
-  const deleteIncome = async (id) => { };
+  const deleteIncome = async (id) => {
+    try {
+      await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
+      setOpenDeleteAlert({ show: false, data: null });
+      toast.success("Income details deted successfully.");
+      fetchIncomeDetails();
+    } catch (error) {
+      console.error("Error deleting income: ", error.respone?.data?.message || error.message)
+    }
+  };
 
   //Handle Download income
   const handleDownloadIncomeDetails = async () => { };
@@ -92,6 +105,14 @@ export default function Income() {
               onAddIncome={() => setOpenAddIncomeModal(true)}
             />
           </div>
+
+          <IncomeList 
+            transactions={incomeData}
+            onDelete={(id) => {
+              setOpenDeleteAlert({ show: true, data: id });
+            }}
+            onDownload={handleDownloadIncomeDetails}
+          />
         </div>
 
         <Modal
@@ -105,6 +126,18 @@ export default function Income() {
             />
           </div>
         </Modal>
+
+        <Modal
+          isOpen={openDeleteAlert.show}
+          onClose={() => setOpenDeleteAlert({ show: false, data: null })}
+          title="Delete Income"
+        >
+          <DeleteAlert
+            content="Are you sure you want to delete this income details?"
+            onDelete={() => deleteIncome(openDeleteAlert.data)}
+          />
+        </Modal>
+        
       </div>
     </DahboardLayout>
   )
