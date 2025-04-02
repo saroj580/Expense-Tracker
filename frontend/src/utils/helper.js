@@ -1,4 +1,8 @@
 import moment from "moment";
+import "moment-timezone";
+
+// Configure moment to use Nepal timezone
+const NEPAL_TIMEZONE = "Asia/Kathmandu";
 
 export const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -39,7 +43,7 @@ export const prepareExpenseChartData = (data = []) => {
 export const prepareIncomeChartData = (data = []) => { 
     const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
     const chartData = sortedData.map((item) => ({
-        month: moment(item?.date).format("Do MMM YYYY"),
+        month: formatNepalDate(item?.date),
         amount: item?.amount,
         source: item?.source
 
@@ -47,10 +51,20 @@ export const prepareIncomeChartData = (data = []) => {
     return chartData;
 }
 
+// Format a date to Nepal Time
+export const formatNepalDate = (date) => {
+    return moment(date).tz(NEPAL_TIMEZONE).format("Do MMM YYYY");
+};
+
+// Format a date with time to Nepal Time
+export const formatNepalDateTime = (date) => {
+    return moment(date).tz(NEPAL_TIMEZONE).format("Do MMM YYYY, h:mm A");
+};
+
 export const prepareExpenseLineChartData = (data = []) => {
     const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
     const chartData = sortedData.map((item) => ({
-        month: moment(item?.date).format("Do MMM YYYY"),
+        month: formatNepalDate(item?.date),
         amount: item?.amount,
         category: item?.category
 

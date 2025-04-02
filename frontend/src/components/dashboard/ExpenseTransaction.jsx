@@ -1,6 +1,6 @@
 import React from 'react'
 import { LuArrowRight } from 'react-icons/lu'
-import moment from 'moment'
+import { formatNepalDate } from '../../utils/helper'
 import TransactionInfoCard from '../cards/TransactionInfoCard'
 
 export default function ExpenseTransaction({ transactions, onSeeMore }) {
@@ -17,7 +17,7 @@ export default function ExpenseTransaction({ transactions, onSeeMore }) {
                         key={expene._id}
                         title={expene.category}
                         icon={expene.icon}
-                        date={moment(expene.date).format("Do MMM YYYY")}
+                        date={formatNepalDate(expene.date)}
                         amount={expene.amount}
                         type="expene"
                         hideDeleteBtn

@@ -1,7 +1,7 @@
 import React from 'react'
 import { LuDownload } from 'react-icons/lu'
 import TransactionInfoCard from '../cards/TransactionInfoCard'
-import moment from 'moment'
+import { formatNepalDate } from '../../utils/helper'
 
 export default function IncomeList({transactions, onDelete, onDownload}) {
     return (
@@ -19,7 +19,7 @@ export default function IncomeList({transactions, onDelete, onDownload}) {
                             key={income._id}
                             title={income.source}
                             icon={income.icon}
-                            date={moment(income.date).format("Do MMM YYYY")}
+                            date={formatNepalDate(expene.date)}
                             amount={income.amount}
                             type="income"
                             onDelete={() => onDelete(income._id)}

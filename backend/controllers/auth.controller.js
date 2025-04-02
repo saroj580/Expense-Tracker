@@ -51,15 +51,47 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
+    console.log("Login attempt with body:", req.body);
+    console.log("Headers:", req.headers);
+
+    let email, password;
+    
+    if (typeof req.body === 'string') {
+        try {
+            const parsed = JSON.parse(req.body);
+            email = parsed.email;
+            password = parsed.password;
+        } catch (e) {
+            console.error("Error parsing JSON body:", e);
+            return res.status(400).json({ message: "Invalid request format." });
+        }
+    } else {
+        email = req.body.email;
+        password = req.body.password;
+    }
+
     if (!email || !password) {
+        console.log("Login failed: Missing email or password");
         return res.status(400).json({ message: "All fields are required." });
     }
     try {
+        console.log("Searching for user with email:", email);
         const user = await User.findOne({ email });
-        if (!user || !(await user.comparePassword(password))) {
+
+        if (!user) {
+            console.log("Login failed: User not found with email:", email);
             return res.status(400).json({ message: "Invalid credentials." });
         }
+
+        const isPasswordValid = await user.comparePassword(password);
+        console.log("Password validation result:", isPasswordValid);
+        
+        if (!isPasswordValid) {
+            console.log("Login failed: Invalid password for user:", email);
+            return res.status(400).json({ message: "Invalid credentials." });
+        }
+
+        console.log("Login successful for user:", email);
 
         res.status(200).json({
             id: user._id,
@@ -67,7 +99,8 @@ const loginUser = async (req, res) => {
             token: generateToken(user._id)
         });
     } catch (error) {
-        res.status(500).json({ message: "Error registering user", error: error.message });
+        console.error("Login error:", error);
+        res.status(500).json({ message: "Error logging in", error: error.message });
     }
 
 };

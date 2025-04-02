@@ -1,6 +1,7 @@
 const Income = require("../model/income.model");
 const Expense = require("../model/expense.model");
 const { isValidObjectId, Types } = require('mongoose');
+const { formatNepalTime } = require('../utils/dateHelper');
 
 //Dashboard data
 exports.getdashboardData = async (req, res) => {
@@ -23,7 +24,11 @@ exports.getdashboardData = async (req, res) => {
             },
         ]);
 
-        console.log("TotalIncome", { totalIncome, userId: isValidObjectId(userId) });
+        console.log("TotalIncome", { 
+            totalIncomeAmount: totalIncome.length > 0 ? totalIncome[0].total : 0,
+            recordCount: totalIncome.length,
+            timestamp: formatNepalTime(new Date())
+        });
 
 
         //fetch the total expense 
@@ -39,7 +44,11 @@ exports.getdashboardData = async (req, res) => {
             }
         ])
 
-        console.log("TotalExpense", { totalExpense, userId: isValidObjectId(userId) });
+        console.log("TotalExpense", { 
+            totalExpenseAmount: totalExpense.length > 0 ? totalExpense[0].total : 0,
+            recordCount: totalExpense.length,
+            timestamp: formatNepalTime(new Date())
+        });
         
         //get income transaction of last 60 days
         const last60DaysIncomeTransaction = await Income.find({

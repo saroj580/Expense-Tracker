@@ -1,7 +1,7 @@
 import React from 'react'
 import { LuArrowRight } from 'react-icons/lu'
 import TransactionInfoCard from '../cards/TransactionInfoCard'
-import moment from 'moment'
+import { formatNepalDate } from '../../utils/helper'
 
 export default function RecentIncome({transactions, onSeeMore}) {
     return (
@@ -17,7 +17,7 @@ export default function RecentIncome({transactions, onSeeMore}) {
                         key={item._id}
                         title={item.source}
                         icon={item.icon}
-                        date={moment(item.date).format("Do MMM YYYY")}
+                        date={formatNepalDate(expene.date)}
                         amount={item.amount}
                         type="income"
                         hideDeleteBtn
