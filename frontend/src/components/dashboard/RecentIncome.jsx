@@ -17,7 +17,7 @@ export default function RecentIncome({transactions, onSeeMore}) {
                         key={item._id}
                         title={item.source}
                         icon={item.icon}
-                        date={formatNepalDate(expene.date)}
+                        date={formatNepalDate(item.date)}
                         amount={item.amount}
                         type="income"
                         hideDeleteBtn

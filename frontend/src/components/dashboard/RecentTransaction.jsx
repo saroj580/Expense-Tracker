@@ -19,7 +19,7 @@ export default function RecentTransaction({transactions, onSeeMore}) {
                         key={item._id}
                         title={item.type === "expense" ? item.category : item.source}
                         icon={item.icon}
-                        date={formatNepalDate(expene.date)}
+                        date={formatNepalDate(item.date)}
                         amount={item.amount}
                         type={item.type}
                         hideDeleteBtn

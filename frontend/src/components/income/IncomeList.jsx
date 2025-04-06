@@ -19,7 +19,7 @@ export default function IncomeList({transactions, onDelete, onDownload}) {
                             key={income._id}
                             title={income.source}
                             icon={income.icon}
-                            date={formatNepalDate(expene.date)}
+                            date={formatNepalDate(income.date)}
                             amount={income.amount}
                             type="income"
                             onDelete={() => onDelete(income._id)}
