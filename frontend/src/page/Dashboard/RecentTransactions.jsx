@@ -51,9 +51,58 @@ export default function RecentTransactions() {
     }
   };
 
+  // Group transactions by date
+  const groupTransactionsByDate = () => {
+    if (!transactions || transactions.length === 0) return {};
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    const groups = {};
+    
+    transactions.forEach(transaction => {
+      const transactionDate = new Date(transaction.date);
+      transactionDate.setHours(0, 0, 0, 0);
+      
+      let dateLabel;
+      
+      if (transactionDate.getTime() === today.getTime()) {
+        dateLabel = 'Today';
+      } else if (transactionDate.getTime() === yesterday.getTime()) {
+        dateLabel = 'Yesterday';
+      } else {
+        dateLabel = formatNepalDate(transaction.date);
+      }
+      
+      if (!groups[dateLabel]) {
+        groups[dateLabel] = [];
+      }
+      
+      groups[dateLabel].push(transaction);
+    });
+    
+    return groups;
+  };
+
   useEffect(() => {
     fetchTransactions();
   }, []);
+
+  const groupedTransactions = groupTransactionsByDate();
+  const dateGroups = Object.keys(groupedTransactions).sort((a, b) => {
+    if (a === 'Today') return -1;
+    if (b === 'Today') return 1;
+    if (a === 'Yesterday') return -1;
+    if (b === 'Yesterday') return 1;
+    
+    // For other dates, sort in descending order (newest first)
+    const dateA = new Date(groupedTransactions[a][0].date);
+    const dateB = new Date(groupedTransactions[b][0].date);
+    return dateB - dateA;
+  });
 
   return (
     <DahboardLayout activeMenu='Transactions'>
@@ -66,25 +115,30 @@ export default function RecentTransactions() {
           <div className="text-center py-4">No transactions found</div>
         ) : (
           <div className='card'>
-            <div className='mt-2'>
-              {transactions.map((item) => (
-                <TransactionInfoCard 
-                  key={item._id}
-                  title={item.type === "expense" ? item.category : item.source}
-                  icon={item.icon}
-                  date={formatNepalDate(item.date)} 
-                  amount={item.amount}
-                  type={item.type}
-                  onDelete={() => setOpenDeleteAlert({ 
-                    show: true, 
-                    data: { 
-                      id: item._id, 
-                      type: item.type 
-                    } 
-                  })}
-                />
-              ))}
-            </div>
+            {dateGroups.map(dateGroup => (
+              <div key={dateGroup} className="mb-4">
+                <h4 className="text-sm font-medium text-gray-500 mb-2 px-3 pt-2 border-t border-gray-100">
+                  {dateGroup}
+                </h4>
+                {groupedTransactions[dateGroup].map(item => (
+                  <TransactionInfoCard 
+                    key={item._id}
+                    title={item.type === "expense" ? item.category : item.source}
+                    icon={item.icon}
+                    date={formatNepalDate(item.date)} 
+                    amount={item.amount}
+                    type={item.type}
+                    onDelete={() => setOpenDeleteAlert({ 
+                      show: true, 
+                      data: { 
+                        id: item._id, 
+                        type: item.type 
+                      } 
+                    })}
+                  />
+                ))}
+              </div>
+            ))}
           </div>
         )}
       </div>

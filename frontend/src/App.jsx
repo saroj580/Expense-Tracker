@@ -3,12 +3,14 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./page/Auth/Login";
 import SignUp from "./page/Auth/SignUp";
+import ForgetPassword from './page/Auth/ForgetPassword.jsx';
+import ResetPassword from "./page/Auth/ResetPassword.jsx";
 import Home from "./page/Dashboard/Home";
 import Expense from "./page/Dashboard/Expense";
 import Income from "./page/Dashboard/Income"
+import RecentTransactions from "./page/Dashboard/RecentTransactions.jsx";
 import UserProvider from './context/UserContext';
 import { Toaster } from 'react-hot-toast';
-import RecentTransactions from './page/Dashboard/RecentTransactions';
 
 
 function App() {
@@ -20,10 +22,12 @@ function App() {
             <Route path='/' element={ <Root/>}  />
             <Route path='login' exact element={<Login />} />
             <Route path='signup' exact element={<SignUp />} />
+            <Route path='forgot-password' exact element={<ForgetPassword />} />
+            <Route path='reset-password/:token' exact element={<ResetPassword />} />
             <Route path='dashboard' exact element={ <Home />}  />
-            <Route path='income' exact element={<Income />} />
-            <Route path='transactions' exact element={<RecentTransactions/>} />
+            <Route path='income' exact element={ <Income/>}  />
             <Route path='expense' exact element={<Expense />} />
+            <Route path='transactions' exact element={<RecentTransactions />} />
           </Routes>
         </Router>
       </div>
