@@ -8,6 +8,8 @@ import { formatNepalDate } from '../../utils/helper';
 import Modal from '../../components/layout/Modal';
 import DeleteAlert from '../../components/layout/DeleteAlert';
 import toast from 'react-hot-toast';
+import { generateTransactionsPDF } from '../../utils/pdfGenerator';
+import { FiDownload } from 'react-icons/fi';
 
 export default function RecentTransactions() {
   UseUserAuth();
@@ -48,6 +50,49 @@ export default function RecentTransactions() {
     } catch (error) {
       console.error(`Error deleting ${type}:`, error.response?.data?.message || error.message);
       toast.error(`Failed to delete ${type}. Please try again.`);
+    }
+  };
+
+  const handleDownloadPDF = () => {
+    if (!transactions || !Array.isArray(transactions) || transactions.length === 0) {
+      toast.error('No transaction data available to generate PDF');
+      return;
+    }
+    
+    console.log("PDF Download requested for", transactions.length, "transactions");
+    try {
+      // Validate transaction data format
+      const invalidItems = transactions.filter(item => !item || typeof item !== 'object' || !item.type);
+      if (invalidItems.length > 0) {
+        console.warn(`Found ${invalidItems.length} items with missing or invalid data:`, invalidItems);
+      }
+      
+      // Process data to ensure all required fields are present
+      const processedData = transactions.map(item => {
+        if (!item) return null;
+        // Make sure each item has a type field
+        if (!item.type) {
+          // Try to determine type based on available fields
+          const hasCategory = !!item.category;
+          const hasSource = !!item.source;
+          
+          return {
+            ...item,
+            type: hasCategory ? 'expense' : (hasSource ? 'income' : 'unknown')
+          };
+        }
+        return item;
+      }).filter(Boolean); // Remove any null entries
+      
+      console.log("Starting PDF generation with", processedData.length, "transactions");
+      generateTransactionsPDF(processedData, 'Recent Transactions Report');
+      console.log("PDF generation completed successfully");
+      toast.success('PDF downloaded successfully');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      toast.error('Failed to download PDF. Please try again.');
     }
   };
 
@@ -107,7 +152,19 @@ export default function RecentTransactions() {
   return (
     <DahboardLayout activeMenu='Transactions'>
       <div className='my-5 mx-auto'>
-        <h3 className='text-xl font-semibold mb-4'>Recent Transactions</h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className='text-xl font-semibold'>Recent Transactions</h3>
+          
+          {transactions.length > 0 && (
+            <button 
+              onClick={handleDownloadPDF}
+              className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-md text-sm transition-colors"
+            >
+              <FiDownload size={16} />
+              <span>Download PDF</span>
+            </button>
+          )}
+        </div>
         
         {loading ? (
           <div className="text-center py-4">Loading transactions...</div>
@@ -158,4 +215,4 @@ export default function RecentTransactions() {
       </Modal>
     </DahboardLayout>
   );
-} 
+}

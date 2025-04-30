@@ -9,6 +9,7 @@ import AddExpenseForm from '../../components/expense/AddExpenseForm';
 import Modal from '../../components/layout/Modal';
 import ExpenseList from '../../components/expense/ExpenseList';
 import DeleteAlert from '../../components/layout/DeleteAlert';
+import { generateTransactionsPDF } from '../../utils/pdfGenerator';
 
 export default function Expense() {
   UseUserAuth();
@@ -109,6 +110,39 @@ export default function Expense() {
     }
   }
   
+  const handlePdfDownload = () => {
+    if (!expenseData || !Array.isArray(expenseData) || expenseData.length === 0) {
+      toast.error('No expense data available to generate PDF');
+      return;
+    }
+    
+    console.log("PDF Download requested for", expenseData.length, "expense transactions");
+    try {
+      // Validate expense data format
+      const invalidItems = expenseData.filter(item => !item || typeof item !== 'object');
+      if (invalidItems.length > 0) {
+        console.warn(`Found ${invalidItems.length} items with missing or invalid data:`, invalidItems);
+      }
+      
+      // Add type field if missing
+      const processedData = expenseData.map(item => {
+        if (!item) return null;
+        // Ensure all items have a type field set to 'expense'
+        return { ...item, type: 'expense' };
+      }).filter(Boolean); // Remove any null entries
+      
+      console.log("Starting PDF generation with", processedData.length, "expense items");
+      generateTransactionsPDF(processedData, 'Expense Report');
+      console.log("PDF generation completed successfully");
+      toast.success('PDF downloaded successfully');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      toast.error('Failed to download PDF. Please try again.');
+    }
+  };
+  
   useEffect(() => {
     fetchExpenseDetails();
     return () => {
@@ -133,6 +167,7 @@ export default function Expense() {
               setOpenDeleteAlert({ show: true, data : id });
             }}
             onDownload={handleDownloadExpenseDetails}
+            onPdfDownload={handlePdfDownload}
           />
         </div>
 

@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./page/Auth/Login";
 import SignUp from "./page/Auth/SignUp";
-import ForgetPassword from './page/Auth/ForgetPassword.jsx';
+import ForgetPassword from "./page/Auth/ForgetPassword.jsx";
 import ResetPassword from "./page/Auth/ResetPassword.jsx";
 import Home from "./page/Dashboard/Home";
 import Expense from "./page/Dashboard/Expense";
@@ -11,7 +11,7 @@ import Income from "./page/Dashboard/Income"
 import RecentTransactions from "./page/Dashboard/RecentTransactions.jsx";
 import UserProvider from './context/UserContext';
 import { Toaster } from 'react-hot-toast';
-
+import TestPDF from './components/TestPDF.jsx';
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
             <Route path='income' exact element={ <Income/>}  />
             <Route path='expense' exact element={<Expense />} />
             <Route path='transactions' exact element={<RecentTransactions />} />
+            <Route path='test-pdf' exact element={<TestPDF />} />
           </Routes>
         </Router>
       </div>

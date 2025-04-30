@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import IncomeList from '../../components/income/IncomeList';
 import DeleteAlert from '../../components/layout/DeleteAlert';
 import { UseUserAuth } from '../../hooks/useUserAuth';
+import { generateTransactionsPDF } from '../../utils/pdfGenerator';
 
 export default function Income() {
   UseUserAuth();
@@ -110,6 +111,39 @@ export default function Income() {
     }
   };
 
+  const handlePdfDownload = () => {
+    if (!incomeData || !Array.isArray(incomeData) || incomeData.length === 0) {
+      toast.error('No income data available to generate PDF');
+      return;
+    }
+    
+    console.log("PDF Download requested for", incomeData.length, "income transactions");
+    try {
+      // Validate income data format
+      const invalidItems = incomeData.filter(item => !item || typeof item !== 'object' || !item.type);
+      if (invalidItems.length > 0) {
+        console.warn(`Found ${invalidItems.length} items with missing or invalid data:`, invalidItems);
+      }
+      
+      // Add type field if missing
+      const processedData = incomeData.map(item => {
+        if (!item) return null;
+        // Ensure all items have a type field set to 'income'
+        return { ...item, type: 'income' };
+      }).filter(Boolean); // Remove any null entries
+      
+      console.log("Starting PDF generation with", processedData.length, "income items");
+      generateTransactionsPDF(processedData, 'Income Report');
+      console.log("PDF generation completed successfully");
+      toast.success('PDF downloaded successfully');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      toast.error('Failed to download PDF. Please try again.');
+    }
+  };
+
   useEffect(() => {
     fetchIncomeDetails();
     return () => { };
@@ -131,6 +165,7 @@ export default function Income() {
               setOpenDeleteAlert({ show: true, data: id });
             }}
             onDownload={handleDownloadIncomeDetails}
+            onPdfDownload={handlePdfDownload}
           />
         </div>
 
