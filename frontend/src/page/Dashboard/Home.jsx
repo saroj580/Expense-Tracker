@@ -84,7 +84,7 @@ export default function Home() {
         <div className='grid grid-cols-1 md:grid-cols-2 mt-6 gap-6'>
           <RecentTransaction
             transactions={dashboardData?.recentTransaction}
-            onSeeMore = {() => navigate("/expsense")}
+            onSeeMore = {() => navigate("/transactions")}
           />
 
           <FinanceOverview

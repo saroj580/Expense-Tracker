@@ -8,6 +8,7 @@ import Expense from "./page/Dashboard/Expense";
 import Income from "./page/Dashboard/Income"
 import UserProvider from './context/UserContext';
 import { Toaster } from 'react-hot-toast';
+import RecentTransactions from './page/Dashboard/RecentTransactions';
 
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
             <Route path='login' exact element={<Login />} />
             <Route path='signup' exact element={<SignUp />} />
             <Route path='dashboard' exact element={ <Home />}  />
-            <Route path='income' exact element={ <Income/>}  />
+            <Route path='income' exact element={<Income />} />
+            <Route path='transactions' exact element={<RecentTransactions/>} />
             <Route path='expense' exact element={<Expense />} />
           </Routes>
         </Router>
